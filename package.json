@@ -9,7 +9,8 @@
     "preview": "vite preview --host 127.0.0.1",
     "test": "tsx --test tests/*.test.ts",
     "test:browser": "node scripts/browser-qa.mjs",
-    "deploy": "npm run build && gh-pages -d dist --dotfiles"
+    "deploy": "npm run build && gh-pages -d dist --dotfiles",
+    "test:public": "node scripts/public-smoke.mjs"
   },
   "dependencies": {
     "three": "^0.187.0"

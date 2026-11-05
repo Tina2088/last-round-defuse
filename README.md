@@ -26,7 +26,7 @@ npm run preview
 
 预览地址 http://127.0.0.1:4173/last-round-defuse/ 。
 
-浏览器回归需要本机 Google Chrome，先在另一终端启动开发服务器，再运行 `npm run test:browser`。截图与 JSON 结果写到仓库内 `test-results/`，不提交版本库。生产构建不包含开发测试状态入口。
+浏览器回归需要本机 Google Chrome，先在另一终端启动开发服务器，再运行 `npm run test:browser`。`npm run test:public` 检查公开 Pages 的生产界面。截图与 JSON 结果写到仓库内 `test-results/`；交付证据选存于 `docs/qa/`。生产构建不包含开发测试状态入口。
 
 ## 操作
 

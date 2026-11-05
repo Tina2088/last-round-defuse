@@ -1,0 +1,17 @@
+{
+  "url": "https://tina2088.github.io/last-round-defuse/",
+  "status": 200,
+  "testedAt": "2026-11-05T08:45:08.145Z",
+  "version": "v0.1.0",
+  "checks": [
+    "production WebGL render",
+    "no development state hook",
+    "real pointer lock",
+    "3v3 start",
+    "fire and weapon switch",
+    "move",
+    "Escape and frozen clock",
+    "Chinese/English"
+  ],
+  "errors": []
+}
