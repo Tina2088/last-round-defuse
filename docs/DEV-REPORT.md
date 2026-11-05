@@ -1,6 +1,6 @@
 # DEV-REPORT · 残局拆弹手 / Last Round Defuse
 
-- 版本：**v0.1.0**
+- 版本：**v0.1.1**
 - 完成日期：2026-11-05（Asia/Shanghai）
 - 规格：[DEV-TASK-002.md](DEV-TASK-002.md)
 - 公开 HTTPS：**https://tina2088.github.io/last-round-defuse/**

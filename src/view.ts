@@ -33,9 +33,13 @@ export class View {
       this.box(x, 3.05, z, w, 0.12, d, 0xa4b0b2);
     }
     for (const s of sites) {
-      const ring = new THREE.Mesh(new THREE.RingGeometry(2.8, 3.05, 64), new THREE.MeshBasicMaterial({ color: 0xf3d36c, side: THREE.DoubleSide }));
+      // Shared A/B markings: a 0.65 m bright band with a dark outline on either edge.
+      // Keep the outer edge at the original site boundary; this is only ground paint.
+      const outline = new THREE.Mesh(new THREE.RingGeometry(2.25, 3.17, 96), new THREE.MeshBasicMaterial({ color: 0x172630, side: THREE.DoubleSide, toneMapped: false }));
+      outline.rotation.x = -Math.PI / 2; outline.position.set(s.x, 0.02, s.z); this.scene.add(outline);
+      const ring = new THREE.Mesh(new THREE.RingGeometry(2.4, 3.05, 96), new THREE.MeshBasicMaterial({ color: 0xffdf32, side: THREE.DoubleSide, toneMapped: false }));
       ring.rotation.x = -Math.PI / 2; ring.position.set(s.x, 0.025, s.z); this.scene.add(ring);
-      const letter = this.label(s.name, 256, '#f3d36c'); const plane = new THREE.Mesh(new THREE.PlaneGeometry(3, 3), new THREE.MeshBasicMaterial({ map: letter, transparent: true, depthWrite: false }));
+      const letter = this.label(s.name, 256, '#ffdf32'); const plane = new THREE.Mesh(new THREE.PlaneGeometry(3, 3), new THREE.MeshBasicMaterial({ map: letter, transparent: true, depthWrite: false, toneMapped: false }));
       plane.rotation.x = -Math.PI / 2; plane.position.set(s.x, 0.03, s.z); this.scene.add(plane);
       this.sign(s.name, s.x, 4.1, -25.9, 3, 0xf3d36c);
     }
@@ -77,12 +81,21 @@ export class View {
     for (const m of this.models.values()) { this.scene.remove(m); this.disposeTree(m); } this.models.clear();
     for (const a of game.actors) {
       const g = new THREE.Group(); const attack = game.side(a.team) === 'attack'; const color = attack ? 0xf49b4b : 0x47ccd2;
-      this.box(0, 0.95, 0, 0.58, 0.75, 0.36, 0x394b58, g);
+      this.box(0, 0.95, 0, 0.58, 0.75, 0.36, color, g);
       for (const x of [-0.18, 0.18]) this.box(x, 0.36, 0, 0.2, 0.72, 0.25, 0x283b47, g);
       this.box(0, 1.52, 0, 0.35, 0.35, 0.33, 0xb5a696, g);
       if (attack) { const cap = new THREE.Mesh(new THREE.ConeGeometry(0.29, 0.25, 4), new THREE.MeshStandardMaterial({ color })); cap.position.y = 1.82; g.add(cap); }
       else this.box(0, 1.76, 0, 0.49, 0.19, 0.45, color, g);
-      this.box(-0.37, 1.16, 0, 0.16, 0.24, 0.4, color, g); this.box(0.37, 1.16, 0, 0.16, 0.24, 0.4, color, g);
+      for (const x of [-0.37, 0.37]) {
+        const shoulder = this.box(x, 1.16, 0, 0.16, 0.24, 0.4, color, g);
+        // Raised triangular orange insignia versus rectangular cyan insignia.
+        // Decorative badges do not change the original shoulder hit volumes.
+        const badge = new THREE.Mesh(attack ? new THREE.ConeGeometry(0.16, 0.24, 3) : new THREE.BoxGeometry(0.27, 0.17, 0.06), new THREE.MeshBasicMaterial({ color, toneMapped: false }));
+        if (attack) badge.scale.z = 0.22;
+        badge.position.set(x, 1.18, -0.23); badge.raycast = () => {};
+        g.add(badge);
+        (shoulder.material as THREE.MeshStandardMaterial).color.setHex(0x263b47);
+      }
       this.box(0.25, 1.04, -0.38, 0.12, 0.14, 0.7, 0x1d2a31, g);
       g.traverse(o => { o.userData.actor = a.id; }); this.models.set(a.id, g); this.scene.add(g);
     }

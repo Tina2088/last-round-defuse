@@ -13,10 +13,11 @@ try { view = new View(app); } catch (error) { app.textContent = t('unsupported')
 view.reset(game);
 app.insertAdjacentHTML('beforeend', `
   <div id="damage"></div><div id="hit">×</div>
-  <header id="brand"><span class="brand-mark">╱╱</span><span id="brand-name"></span><small>v0.1.0</small></header>
+  <header id="brand"><span class="brand-mark">╱╱</span><span id="brand-name"></span><small>v0.1.1</small></header>
   <div id="top-actions"><button id="sound"></button><button id="language"></button></div>
   <main id="menu"></main>
   <section id="hud" hidden>
+    <button id="hud-language" aria-keyshortcuts="L"></button>
     <div id="scoreboard"><div class="team-score"><small id="ours-label"></small><b id="ours">0</b><span id="our-side"></span></div><div id="clock-panel"><small id="round"></small><strong id="clock">1:45</strong><span id="clock-label"></span></div><div class="team-score"><small id="theirs-label"></small><b id="theirs">0</b><span id="their-side"></span></div></div>
     <div id="objective"></div><div id="site-arrows"></div><canvas id="minimap" width="170" height="170"></canvas>
     <div id="feed" aria-live="polite"></div><div id="crosshair"><i></i><i></i><i></i><i></i></div>
@@ -51,8 +52,11 @@ function restart() {
 }
 function renderMenu() {
   $('brand-name').textContent = t('title'); $('language').textContent = t('lang'); $('sound').textContent = `${t('audio')} ${t(audioEnabled ? 'on' : 'off')}`;
-  document.documentElement.lang = language === 'zh' ? 'zh-CN' : 'en'; document.title = `${t('title')} · v0.1.0`;
+  $('hud-language').textContent = `${t('lang')} · L`;
+  $('hud-language').setAttribute('aria-label', t('languageHint'));
+  document.documentElement.lang = language === 'zh' ? 'zh-CN' : 'en'; document.title = `${t('title')} · v0.1.1`;
   const show = !started || game.paused || game.phase === 'finished'; $('menu').hidden = !show; $('hud').hidden = !started;
+  $('hud-language').hidden = show;
   $('brand').classList.toggle('compact', started); $('top-actions').hidden = started && !show;
   if (!show) return;
   const finished = game.phase === 'finished';
@@ -67,11 +71,13 @@ function renderMenu() {
   });
   $('restart')?.addEventListener('click', restart);
 }
-$('language').addEventListener('click', () => {
+function toggleLanguage() {
   const size = ($('size') as HTMLSelectElement | null)?.value; const difficulty = ($('difficulty') as HTMLSelectElement | null)?.value;
   language = language === 'zh' ? 'en' : 'zh'; localStorage.setItem('lrd-language', language); renderMenu();
   if (size) ($('size') as HTMLSelectElement).value = size; if (difficulty) ($('difficulty') as HTMLSelectElement).value = difficulty;
-});
+}
+$('language').addEventListener('click', toggleLanguage);
+$('hud-language').addEventListener('click', toggleLanguage);
 $('sound').addEventListener('click', () => { audioEnabled = !audioEnabled; renderMenu(); });
 view.renderer.domElement.addEventListener('click', () => { if (started && game.phase !== 'finished' && !document.pointerLockElement) lock(); });
 document.addEventListener('pointerlockchange', () => {
@@ -85,6 +91,7 @@ addEventListener('keydown', e => {
   if (['Space', 'ControlLeft', 'ControlRight', 'Tab'].includes(e.code) && started) e.preventDefault();
   if (e.code === 'Escape') { pause(); return; }
   if (!started || e.repeat) return;
+  if (e.code === 'KeyL') { toggleLanguage(); return; }
   if (e.code === 'KeyR' && (game.paused || game.phase === 'finished')) { restart(); return; }
   if (game.paused || game.phase !== 'live' || game.player.hp <= 0) return;
   keys.add(e.code);

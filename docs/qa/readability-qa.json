@@ -1,0 +1,21 @@
+{
+  "base": "http://127.0.0.1:5173/last-round-defuse/",
+  "testedAt": "2026-11-05T09:06:37.684Z",
+  "checks": [
+    "1440x900 zh menu footer reachable",
+    "1440x900 en menu footer reachable",
+    "1280x720 zh menu footer reachable",
+    "1280x720 en menu footer reachable",
+    "960x540 zh menu footer reachable",
+    "960x540 en menu footer reachable",
+    "active kill feed and HUD translate in place"
+  ],
+  "visualReview": [
+    "readability-models.png",
+    "readability-site-A-20m.png",
+    "readability-site-B-20m.png",
+    "readability-hud-en.png",
+    "readability-hud-zh.png"
+  ],
+  "errors": []
+}

@@ -3,6 +3,7 @@
   "checks": [
     "start screen, bilingual menus, all team sizes and difficulty",
     "real pointer lock and first person render",
+    "live language shortcut preserves match and pointer lock",
     "WASD, walking speed, jump and crouch",
     "mouse aim, firing, reload and all three weapons",
     "rendered raycast headshots and solid-wall shot occlusion",

@@ -1,9 +1,10 @@
 {
   "url": "https://tina2088.github.io/last-round-defuse/",
   "status": 200,
-  "testedAt": "2026-11-05T08:45:08.145Z",
-  "version": "v0.1.0",
+  "testedAt": "2026-11-05T09:08:58.226Z",
+  "version": "v0.1.1",
   "checks": [
+    "v0.1.1 deployed",
     "production WebGL render",
     "no development state hook",
     "real pointer lock",
@@ -11,7 +12,8 @@
     "fire and weapon switch",
     "move",
     "Escape and frozen clock",
-    "Chinese/English"
+    "Chinese/English",
+    "live language shortcut retains pointer lock"
   ],
   "errors": []
 }

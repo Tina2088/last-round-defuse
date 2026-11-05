@@ -13,10 +13,17 @@ page.on('response', response => { if (response.status() >= 400) errors.push(`${r
 try {
   const response = await page.goto(url);
   assert.equal(response.status(), 200); await page.waitForSelector('#play');
+  assert.equal(await page.locator('#brand small').innerText(), 'v0.1.1');
   assert.equal(await page.evaluate(() => typeof window.__qa), 'undefined');
   await page.screenshot({ path: 'test-results/public-start.png' });
   await page.selectOption('#size', '3'); await page.selectOption('#difficulty', 'easy');
   await page.click('#play'); await page.waitForFunction(() => !!document.pointerLockElement);
+  await page.keyboard.press('KeyL');
+  await page.waitForFunction(() => document.getElementById('weapon').textContent.includes('Rifle'));
+  assert.equal(await page.evaluate(() => !!document.pointerLockElement), true);
+  assert.equal(await page.locator('#hud-language').innerText(), '中文 · L');
+  await page.keyboard.press('KeyL');
+  await page.waitForFunction(() => document.getElementById('weapon').textContent.includes('步枪'));
   await page.waitForTimeout(200); assert.equal(await page.locator('#weapon b').innerText(), '30 / 90');
   await page.mouse.down(); await page.waitForTimeout(300); await page.mouse.up();
   assert.notEqual(await page.locator('#weapon b').innerText(), '30 / 90');
@@ -28,9 +35,10 @@ try {
   assert.match(await page.locator('h1').innerText(), /作战暂停/);
   const before = await page.locator('#clock').innerText(); await page.waitForTimeout(1100); assert.equal(await page.locator('#clock').innerText(), before);
   await page.click('#language'); assert.equal(await page.locator('h1').innerText(), 'Operation paused');
+  await page.waitForFunction(() => document.getElementById('weapon').textContent.includes('Rifle'));
   await page.screenshot({ path: 'test-results/public-pause-en.png' });
   assert.deepEqual(errors, []);
-  const result = { url, status: response.status(), testedAt: new Date().toISOString(), version: 'v0.1.0', checks: ['production WebGL render', 'no development state hook', 'real pointer lock', '3v3 start', 'fire and weapon switch', 'move', 'Escape and frozen clock', 'Chinese/English'], errors };
+  const result = { url, status: response.status(), testedAt: new Date().toISOString(), version: await page.locator('#brand small').innerText(), checks: ['v0.1.1 deployed', 'production WebGL render', 'no development state hook', 'real pointer lock', '3v3 start', 'fire and weapon switch', 'move', 'Escape and frozen clock', 'Chinese/English', 'live language shortcut retains pointer lock'], errors };
   await writeFile('test-results/public-smoke.json', JSON.stringify(result, null, 2));
   console.log(JSON.stringify(result, null, 2));
 } finally { await browser.close(); }

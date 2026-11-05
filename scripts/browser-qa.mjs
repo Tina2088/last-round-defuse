@@ -29,6 +29,18 @@ try {
     await page.click('#play'); await page.waitForFunction(() => !!document.pointerLockElement && !window.__qa.game.paused);
     await page.waitForTimeout(150); await page.screenshot({ path: 'test-results/03-first-person.png' });
   });
+  await check('live language shortcut preserves match and pointer lock', async () => {
+    const before = await state();
+    await page.keyboard.press('KeyL');
+    await page.waitForFunction(() => document.documentElement.lang === 'zh-CN' && document.getElementById('weapon').textContent.includes('步枪'));
+    assert.equal(await page.locator('#hud-language').innerText(), 'English · L');
+    assert.equal(await page.evaluate(() => !!document.pointerLockElement), true);
+    const after = await state();
+    assert.equal(after.paused, false); assert.equal(after.round, before.round); assert.deepEqual(after.ammo, before.ammo);
+    assert.equal(await page.evaluate(() => localStorage.getItem('lrd-language')), 'zh');
+    await page.keyboard.press('KeyL');
+    await page.waitForFunction(() => document.getElementById('weapon').textContent.includes('Rifle'));
+  });
   await check('WASD, walking speed, jump and crouch', async () => {
     const a = await state(); await page.keyboard.down('KeyW'); await page.waitForTimeout(500); await page.keyboard.up('KeyW'); const b = await state(); assert.ok(b.z < a.z - 1);
     await page.keyboard.down('ShiftLeft'); await page.keyboard.down('KeyW'); await page.waitForTimeout(500); await page.keyboard.up('KeyW'); await page.keyboard.up('ShiftLeft'); const c = await state(); assert.ok(b.z - c.z < a.z - b.z);
@@ -63,6 +75,10 @@ try {
     await page.evaluate(() => { const g = window.__qa.game; g.damage(g.player, g.actors[1], 100); }); await page.waitForFunction(() => document.getElementById('spectator').textContent.includes('等待下一回合'));
     assert.equal((await state()).phase, 'live'); assert.match(await page.locator('#spectator').innerText(), /等待下一回合/);
     await page.screenshot({ path: 'test-results/06-spectator.png' });
+    await page.keyboard.press('KeyL');
+    await page.waitForFunction(() => document.getElementById('spectator').textContent.includes('Waiting for next round'));
+    await page.screenshot({ path: 'test-results/06-spectator-en.png' });
+    await page.keyboard.press('KeyL');
     await page.evaluate(() => { window.__qa.game.bomb.timer = 0.08; }); await page.waitForTimeout(200); assert.equal((await state()).phase, 'between');
     await page.screenshot({ path: 'test-results/07-round-end.png' }); await page.waitForTimeout(4100); const s = await state(); assert.equal(s.round, 2); assert.equal(s.hp, 100); assert.equal(s.bomb, null); assert.deepEqual(s.ammo, [30, 12, 0]);
   });
