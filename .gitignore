@@ -1,0 +1,7 @@
+node_modules/
+dist/
+.cache/
+test-results/
+docs/codex-exec.jsonl
+docs/codex-prompt.txt
+*.log
