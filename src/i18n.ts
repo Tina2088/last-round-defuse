@@ -1,4 +1,7 @@
 export const zh = {
+  oneShotKill: '一击必杀', oneShotHint: '默认开启，仅增强玩家攻击。关闭：步枪 34 / 手枪 28 / 刀 55，爆头 ×2。',
+  startSide: '开局阵营', startSideHint: '前 4 回合固定所选阵营，第 5 回合攻守交换。',
+  modelError: '武器资源加载失败，请刷新页面重试。',
   title: '残局拆弹手', subtitle: 'Last Round Defuse', harbor: '北堤港 · 仓库区', briefing: '守住最后一秒。',
   intro: '穿过集装箱与仓库，在 A / B 包点完成攻防。8 个回合，一次换边，每一秒都算数。',
   start: '进入港口', resume: '继续作战', restart: '重开整场 · R', paused: '作战暂停', finished: '比赛结束',
@@ -14,6 +17,7 @@ export const zh = {
   controls: 'WASD 移动 · 鼠标瞄准 · 左键射击', controls2: 'Shift 静步 · Ctrl 蹲 · 空格跳 · R 换弹 · 1 / 2 / 3 切枪',
   controls3: 'E 长按下包 / 拆包 · Esc 暂停 · L 切换中英 · 切换标签自动暂停',
   languageHint: '切换中英（L，局内随时可用）',
+  roundDuration: '回合时限 · 105 秒', plantedRule: '下包后，守方全灭则攻方立即获胜；攻方全灭仍需等待拆除或爆炸。',
   rule1: '固定装备', rule1body: '每回合步枪、手枪、刀', rule2: '105 秒', rule2body: '下包 3 秒 · 拆包 5 秒', rule3: '40 秒', rule3body: '下包后独立爆炸倒计时',
   hint: '点击画面锁定鼠标 · Esc 暂停', pauseHint: '计时与 AI 已暂停。点击继续作战锁定鼠标。',
   pointerError: '鼠标锁定失败。请点击继续作战重试；需使用桌面浏览器。',
@@ -24,6 +28,9 @@ export const zh = {
 };
 export type Key = keyof typeof zh;
 export const en: Record<Key, string> = {
+  oneShotKill: 'One-shot kill', oneShotHint: 'On by default; boosts player hits only. Off: rifle 34 / pistol 28 / knife 55, headshots ×2.',
+  startSide: 'Starting side', startSideHint: 'Keep your chosen side for rounds 1–4. Switch sides in round 5.',
+  modelError: 'Weapon assets failed to load. Refresh the page to retry.',
   title: 'Last Round Defuse', subtitle: 'Harbor operations', harbor: 'North breakwater · Warehouse district', briefing: 'Hold the final second.',
   intro: 'Move through containers and warehouses. Plant or defuse at A / B. Eight rounds, one side switch. Every second counts.',
   start: 'Enter the harbor', resume: 'Resume operation', restart: 'Restart match · R', paused: 'Operation paused', finished: 'Match complete',
@@ -39,6 +46,7 @@ export const en: Record<Key, string> = {
   controls: 'WASD move · Mouse aim · Left click fire', controls2: 'Shift walk · Ctrl crouch · Space jump · R reload · 1 / 2 / 3 weapons',
   controls3: 'Hold E plant / defuse · Esc pause · L language · Switching tabs pauses the match',
   languageHint: 'Switch Chinese / English (L, anytime during a match)',
+  roundDuration: 'Round limit · 105 seconds', plantedRule: 'After planting, eliminating all defenders immediately awards attackers the win. If all attackers die, play continues until defuse or explosion.',
   rule1: 'Fixed loadout', rule1body: 'Rifle, pistol and knife each round', rule2: '105 seconds', rule2body: 'Plant in 3 s · Defuse in 5 s', rule3: '40 seconds', rule3body: 'Independent countdown once planted',
   hint: 'Click to lock mouse · Esc to pause', pauseHint: 'Clock and AI are paused. Resume to lock your mouse.',
   pointerError: 'Mouse lock failed. Click Resume to retry in a desktop browser.',

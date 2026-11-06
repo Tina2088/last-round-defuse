@@ -1,6 +1,6 @@
 {
   "name": "last-round-defuse",
-  "version": "0.1.1",
+  "version": "0.1.2.2",
   "private": true,
   "type": "module",
   "scripts": {
@@ -9,6 +9,9 @@
     "preview": "vite preview --host 127.0.0.1",
     "test": "tsx --test tests/*.test.ts",
     "test:browser": "node scripts/browser-qa.mjs",
+    "test:combat": "node scripts/combat-qa.mjs",
+    "test:weapons": "node scripts/weapon-qa.mjs",
+    "test:benchmark": "node scripts/weapon-benchmark.mjs weapons",
     "deploy": "npm run build && gh-pages -d dist --dotfiles",
     "test:public": "node scripts/public-smoke.mjs"
   },

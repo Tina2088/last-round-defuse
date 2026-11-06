@@ -1,12 +1,14 @@
 import { chromium } from '@playwright/test';
 import assert from 'node:assert/strict';
 import { mkdir, writeFile } from 'node:fs/promises';
+import { rendered } from './qa-helpers.mjs';
 
 // Controlled development-only scenes for repeatable visual review, not production hooks.
 const base = process.env.QA_URL ?? 'http://127.0.0.1:5173/last-round-defuse/';
 await mkdir('test-results', { recursive: true });
 const browser = await chromium.launch({ channel: 'chrome', headless: true, args: ['--enable-webgl', '--ignore-gpu-blocklist', '--enable-unsafe-swiftshader'] });
 const page = await browser.newPage();
+page.setDefaultTimeout(30_000);
 const errors = []; const checks = [];
 page.on('pageerror', e => errors.push(e.message));
 try {
@@ -55,7 +57,7 @@ try {
       q.view.renderer.render(q.view.scene, q.view.camera);
     };
   });
-  await page.waitForTimeout(150);
+  await rendered(page);
   await page.screenshot({ path: 'test-results/readability-models.png' });
   for (const [site, x] of [['A', -17], ['B', 17]]) {
     await page.evaluate(x => {
@@ -67,7 +69,7 @@ try {
         v.renderer.render(v.scene, v.camera);
       };
     }, x);
-    await page.waitForTimeout(150);
+    await rendered(page);
     await page.screenshot({ path: `test-results/readability-site-${site}-20m.png` });
   }
   assert.deepEqual(errors, []);

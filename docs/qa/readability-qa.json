@@ -1,6 +1,6 @@
 {
   "base": "http://127.0.0.1:5173/last-round-defuse/",
-  "testedAt": "2026-11-05T09:06:37.684Z",
+  "testedAt": "2026-11-05T09:43:43.250Z",
   "checks": [
     "1440x900 zh menu footer reachable",
     "1440x900 en menu footer reachable",

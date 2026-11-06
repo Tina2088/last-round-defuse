@@ -1,0 +1,17 @@
+{
+  "testedAt": "2026-11-06T03:59:44.852Z",
+  "checks": [
+    "rifle receiver top is 8–12% screen height below crosshair; models loaded",
+    "muzzle flash, recoil, visible magazine removal, interrupted reload and cached rifle re-entry",
+    "C4 while planting, planted world model, round reset clears all motion",
+    "planted defenders eliminated immediately shows attack elimination win"
+  ],
+  "framing": {
+    "receiverTopBelowCrosshairPercent": 11.055257884916635,
+    "muzzle": {
+      "x": 0.01616792425086799,
+      "y": -0.1523209606637904
+    }
+  },
+  "errors": []
+}

@@ -1,5 +1,5 @@
 import './style.css';
-import { Game, weapons, type GameEvent, type Weapon } from './game';
+import { Game, weapons, type GameEvent, type Weapon, type Side } from './game';
 import { distance, move, sites, blocks } from './world';
 import { View } from './view';
 import { zh, en, type Key } from './i18n';
@@ -7,13 +7,14 @@ import { zh, en, type Key } from './i18n';
 const app = document.querySelector<HTMLDivElement>('#app')!;
 let language: 'zh' | 'en' = localStorage.getItem('lrd-language') === 'en' ? 'en' : 'zh';
 const t = (key: Key) => (language === 'zh' ? zh : en)[key];
+let startSide: Side = 'defend';
 let game = new Game(); let started = false; let pitch = 0; let audioEnabled = true; let pointerError = false;
 let view: View;
 try { view = new View(app); } catch (error) { app.textContent = t('unsupported'); throw error; }
 view.reset(game);
 app.insertAdjacentHTML('beforeend', `
   <div id="damage"></div><div id="hit">×</div>
-  <header id="brand"><span class="brand-mark">╱╱</span><span id="brand-name"></span><small>v0.1.1</small></header>
+  <header id="brand"><span class="brand-mark">╱╱</span><span id="brand-name"></span><small>v0.1.2.2</small></header>
   <div id="top-actions"><button id="sound"></button><button id="language"></button></div>
   <main id="menu"></main>
   <section id="hud" hidden>
@@ -47,14 +48,15 @@ function lock() {
   if (promise) promise.catch(() => { pointerError = true; game.paused = true; renderMenu(); });
 }
 function restart() {
-  game = new Game(game.size, game.difficulty); game.paused = true; pitch = 0; lastRound = 1; previousHp = 100; feed.length = 0; selectedWeapon = 0; bombBeep = -1;
+  game = new Game(game.size, game.difficulty, undefined, game.startSide, game.oneShotKill); game.paused = true; pitch = 0; lastRound = 1; previousHp = 100; feed.length = 0; selectedWeapon = 0; bombBeep = -1;
   view.reset(game); view.setWeapon(0); clearInput(); renderMenu(); lock();
 }
 function renderMenu() {
+  $('toast').textContent = view.fp.error ? t('modelError') : '';
   $('brand-name').textContent = t('title'); $('language').textContent = t('lang'); $('sound').textContent = `${t('audio')} ${t(audioEnabled ? 'on' : 'off')}`;
   $('hud-language').textContent = `${t('lang')} · L`;
   $('hud-language').setAttribute('aria-label', t('languageHint'));
-  document.documentElement.lang = language === 'zh' ? 'zh-CN' : 'en'; document.title = `${t('title')} · v0.1.1`;
+  document.documentElement.lang = language === 'zh' ? 'zh-CN' : 'en'; document.title = `${t('title')} · v0.1.2.2`;
   const show = !started || game.paused || game.phase === 'finished'; $('menu').hidden = !show; $('hud').hidden = !started;
   $('hud-language').hidden = show;
   $('brand').classList.toggle('compact', started); $('top-actions').hidden = started && !show;
@@ -63,13 +65,17 @@ function renderMenu() {
   const title = !started ? t('briefing') : finished ? t(game.score[0] === game.score[1] ? 'draw' : game.score[0] > game.score[1] ? 'victory' : 'defeat') : t('paused');
   $('menu').innerHTML = `<div class="menu-panel ${started ? 'in-match' : ''}"><p class="location"><span></span>${t('harbor')}</p><h1>${title}</h1><p class="intro">${!started ? t('intro') : finished ? `${t('yourTeam')} ${game.score[0]} : ${game.score[1]} ${t('enemyTeam')}` : t('pauseHint')}</p>
     ${!started ? `<div class="rules"><div><b>${t('rule1')}</b><span>${t('rule1body')}</span></div><div><b>${t('rule2')}</b><span>${t('rule2body')}</span></div><div><b>${t('rule3')}</b><span>${t('rule3body')}</span></div></div><div class="settings"><label>${t('size')}<select id="size"><option value="1">1 v 1</option><option value="2" selected>2 v 2</option><option value="3">3 v 3</option></select></label><label>${t('difficulty')}<select id="difficulty"><option value="easy">${t('easy')}</option><option value="normal" selected>${t('normal')}</option></select></label></div>` : ''}
+    ${!started ? `<fieldset class="side-picker"><legend>${t('startSide')}</legend><div>${(['attack', 'defend'] as const).map(side => `<label class="${side}"><input type="radio" name="start-side" id="side-${side}" value="${side}" ${startSide === side ? 'checked' : ''}><span>${t(side)}</span></label>`).join('')}</div><p>${t('startSideHint')}</p></fieldset>` : ''}
+    <label class="one-shot-setting"><input type="checkbox" id="one-shot" ${game.oneShotKill ? 'checked' : ''} aria-describedby="one-shot-hint"><span>${t('oneShotKill')}<small id="one-shot-hint">${t('oneShotHint')}</small></span></label>
     <div class="menu-buttons">${!finished ? `<button id="play" class="primary">${t(started ? 'resume' : 'start')}<span>↗</span></button>` : ''}${started ? `<button id="restart">${t('restart')}</button>` : ''}</div>
-    <p class="match-rule">${t('matchRule')}</p><div class="controls"><b>${t('help')}</b><p>${t('controls')}</p><p>${t('controls2')}</p><p>${t('controls3')}</p></div><p class="desktop">${pointerError ? t('pointerError') : t('desktop')}</p></div><div class="map-caption"><span>07</span><div>${t('harbor')}<small>A / B · 52 × 52 m</small></div></div>`;
+    <p class="match-rule">${t('matchRule')}</p><p class="match-rule">${t('plantedRule')}</p><div class="controls"><b>${t('help')}</b><p>${t('controls')}</p><p>${t('controls2')}</p><p>${t('controls3')}</p></div><p class="desktop">${pointerError ? t('pointerError') : t('desktop')}</p></div><div class="map-caption"><span>07</span><div>${t('harbor')}<small>A / B · 52 × 52 m</small></div></div>`;
   $('play')?.addEventListener('click', () => {
-    if (!started) { game = new Game(Number(($('size') as HTMLSelectElement).value), ($('difficulty') as HTMLSelectElement).value as 'easy' | 'normal'); started = true; game.paused = true; view.reset(game); }
+    if (!started) { game = new Game(Number(($('size') as HTMLSelectElement).value), ($('difficulty') as HTMLSelectElement).value as 'easy' | 'normal', undefined, startSide, game.oneShotKill); started = true; game.paused = true; view.reset(game); }
     lock(); renderMenu();
   });
   $('restart')?.addEventListener('click', restart);
+  $('one-shot').addEventListener('change', () => { game.oneShotKill = ($('one-shot') as HTMLInputElement).checked; });
+  document.querySelectorAll<HTMLInputElement>('input[name="start-side"]').forEach(input => input.addEventListener('change', () => { startSide = input.value as Side; }));
 }
 function toggleLanguage() {
   const size = ($('size') as HTMLSelectElement | null)?.value; const difficulty = ($('difficulty') as HTMLSelectElement | null)?.value;
@@ -116,7 +122,7 @@ function playerStep(dt: number) {
   p.vy -= 16 * dt; p.y = Math.max(0, p.y + p.vy * dt); if (!p.y) p.vy = 0;
   if (p.weapon !== selectedWeapon) { selectedWeapon = p.weapon; view.setWeapon(selectedWeapon); }
   if (firing && !keys.has('KeyE') && game.fire(p)) {
-    const hit = view.shoot(game); tone(p.weapon === 2 ? 210 : 110, 0.08, 0.035, 'sawtooth');
+    const hit = view.shoot(game, pitch); tone(p.weapon === 2 ? 210 : 110, 0.08, 0.035, 'sawtooth');
     if (hit.actor && distance(p, hit.actor) <= weapons[p.weapon].range && hit.actor.team !== p.team) { game.damage(hit.actor, p, weapons[p.weapon].damage, hit.head); hitUntil = performance.now() + 140; tone(800, 0.05); }
   }
 }
@@ -142,7 +148,7 @@ function hud(now: number) {
   $('ours-label').textContent = t('yourTeam'); $('theirs-label').textContent = t('enemyTeam'); $('ours').textContent = String(game.score[0]); $('theirs').textContent = String(game.score[1]);
   $('our-side').textContent = t(side); $('their-side').textContent = t(game.side(1)); $('our-side').className = side; $('their-side').className = game.side(1);
   $('round').textContent = `${t('round')} ${game.round} / 8`; $('clock').textContent = `${Math.floor(remaining / 60)}:${String(remaining % 60).padStart(2, '0')}`;
-  $('clock-panel').classList.toggle('armed', !!game.bomb); $('clock-label').textContent = game.bomb ? `${t('planted')} · ${game.bomb.site}` : '105 s';
+  $('clock-panel').classList.toggle('armed', !!game.bomb); $('clock-label').textContent = game.bomb ? `${t('planted')} · ${game.bomb.site}` : t('roundDuration');
   $('objective').textContent = t(game.bomb ? side === 'attack' ? 'objectiveArmedAttack' : 'objectiveArmedDefend' : side === 'attack' ? 'objectiveAttack' : 'objectiveDefend');
   $('site-arrows').innerHTML = sites.map(s => { const angle = Math.atan2(s.x - p.x, -(s.z - p.z)) + p.yaw; return `<span><i style="transform:rotate(${angle}rad)">↑</i> ${s.name} <small>${Math.round(distance(p, s))} m</small></span>`; }).join('');
   $('vitals').querySelector('small')!.textContent = t('health'); $('vitals').querySelector('b')!.textContent = String(p.hp); ($('vitals').querySelector('i') as HTMLElement).style.width = `${p.hp}%`;
@@ -157,7 +163,7 @@ function hud(now: number) {
   while (feed.length && feed[0].until < now) feed.shift(); $('feed').innerHTML = feed.slice(-5).map(f => `<div>${eventText(f.event)}</div>`).join('');
   $('damage').style.opacity = now < damageUntil ? '1' : '0'; $('hit').style.opacity = now < hitUntil ? '1' : '0'; minimap();
 }
-renderMenu(); let last = performance.now(); let uiClock = 0;
+renderMenu(); void view.assetsReady.then(renderMenu); let last = performance.now(); let uiClock = 0;
 function frame(now: number) {
   const dt = Math.min((now - last) / 1000, 0.05); last = now;
   if (started && !game.paused) {
@@ -175,3 +181,9 @@ function frame(now: number) {
 requestAnimationFrame(frame);
 // Development-only state access for reproducible browser QA. Removed from production builds.
 if (import.meta.env.DEV) Object.assign(window, { __qa: { get game() { return game; }, view, pause, keys, setPitch: (value: number) => { pitch = value; } } });
+// Opt-in production QA exposes snapshots only; getters follow match replacement and toggles.
+if (new URLSearchParams(location.search).get('qa') === '1') Object.assign(window, { __LRD__: {
+  version: 'v0.1.2.2',
+  actors: () => game.actors.map(({ id, team, hp, x, z }) => ({ id, team, hp, x, z })),
+  get oneShotKill() { return game.oneShotKill; },
+} });

@@ -1,0 +1,24 @@
+{
+  "base": "http://127.0.0.1:5173/last-round-defuse/",
+  "testedAt": "2026-11-06T05:50:27.744Z",
+  "checks": [
+    "v0.1.2.2 title, brand and opt-in HP API",
+    "default ON; start-menu choice survives language changes and match creation",
+    "pause changes toggle immediately; translations, resume and restart retain choice",
+    "same-frame standing/crouched hits, enemy priority through walls/allies, dead exclusion and tracer fallback",
+    "normal, toggle false, weapon 0: real center-body hit and hit marker",
+    "normal, toggle false, weapon 1: real center-body hit and hit marker",
+    "normal, toggle false, weapon 2: real center-body hit and hit marker",
+    "normal, toggle true, weapon 0: real center-body hit and hit marker",
+    "normal, toggle true, weapon 1: real center-body hit and hit marker",
+    "normal, toggle true, weapon 2: real center-body hit and hit marker",
+    "easy, toggle false, weapon 0: real center-body hit and hit marker",
+    "easy, toggle false, weapon 1: real center-body hit and hit marker",
+    "easy, toggle false, weapon 2: real center-body hit and hit marker",
+    "easy, toggle true, weapon 0: real center-body hit and hit marker",
+    "easy, toggle true, weapon 1: real center-body hit and hit marker",
+    "easy, toggle true, weapon 2: real center-body hit and hit marker",
+    "short bilingual menus keep toggle and play accessible; fresh page defaults ON"
+  ],
+  "errors": []
+}

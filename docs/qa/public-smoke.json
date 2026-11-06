@@ -1,10 +1,12 @@
 {
   "url": "https://tina2088.github.io/last-round-defuse/",
   "status": 200,
-  "testedAt": "2026-11-05T09:08:58.226Z",
-  "version": "v0.1.1",
+  "testedAt": "2026-11-05T09:46:14.965Z",
+  "version": "v0.1.2",
   "checks": [
-    "v0.1.1 deployed",
+    "v0.1.2 deployed",
+    "rule 9 visible",
+    "all three GLBs loaded from Pages",
     "production WebGL render",
     "no development state hook",
     "real pointer lock",
@@ -13,7 +15,10 @@
     "move",
     "Escape and frozen clock",
     "Chinese/English",
-    "live language shortcut retains pointer lock"
+    "live language shortcut retains pointer lock",
+    "localized round duration",
+    "no deprecated shadow API warnings"
   ],
-  "errors": []
+  "errors": [],
+  "warnings": []
 }

@@ -1,0 +1,20 @@
+{
+  "rifle_fp": {
+    "triangles": 5684,
+    "bytes": 375616,
+    "maxTexture": 512,
+    "source": "Original procedural geometry and seeded NumPy diffuse textures"
+  },
+  "pistol": {
+    "triangles": 3776,
+    "bytes": 233132,
+    "maxTexture": 512,
+    "source": "Original procedural geometry and seeded NumPy diffuse textures"
+  },
+  "c4": {
+    "triangles": 2760,
+    "bytes": 206492,
+    "maxTexture": 512,
+    "source": "Original procedural geometry and seeded NumPy diffuse textures"
+  }
+}

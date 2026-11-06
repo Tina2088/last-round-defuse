@@ -1,0 +1,25 @@
+{
+  "url": "https://tina2088.github.io/last-round-defuse/",
+  "status": 200,
+  "verifiedAt": "2026-11-05T09:14:08.797080+00:00",
+  "pagesCommit": "8b5c2762582faaf9e9958bc7ef8f6c8ec51836d6",
+  "pagesStatus": "built",
+  "htmlMatchesDist": true,
+  "assets": [
+    {
+      "path": "assets/index-c7XjLa49.js",
+      "sha256": "8697b52f97cc67ddeb11c3724344d652e42225f0ada664ec3bf983b2c3bc403e",
+      "bytes": 30138
+    },
+    {
+      "path": "assets/three-M-rpFpJR.js",
+      "sha256": "d47b1d77e5f4560d2db8b569a8712757fb1d20d2e26aaddc7a7fd4092be84d71",
+      "bytes": 537336
+    },
+    {
+      "path": "assets/index-BUc9IFz6.css",
+      "sha256": "faadc098898aa77ecc0bec19c01ade1897c2c117594acb1dc4754cfbfede0c64",
+      "bytes": 8624
+    }
+  ]
+}

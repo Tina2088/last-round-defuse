@@ -1,0 +1,20 @@
+{
+  "base": "http://127.0.0.1:5173/last-round-defuse/",
+  "testedAt": "2026-11-06T03:49:53.864Z",
+  "checks": [
+    "start screen, bilingual menus, all team sizes and difficulty",
+    "real pointer lock and first person render",
+    "live language shortcut preserves match and pointer lock",
+    "WASD, walking speed, jump and crouch",
+    "mouse aim, firing, reload and all three weapons",
+    "rendered raycast headshots and solid-wall shot occlusion",
+    "E plant progress, release reset, planted timer HUD",
+    "Escape freezes game, releases pointer, language changes HUD",
+    "death spectating, postplant elimination invariant, explosion and reset",
+    "real E defuse finishes in five seconds",
+    "timeout, preplant elimination, half switch and match end",
+    "tab visibility automatically pauses"
+  ],
+  "errors": [],
+  "warnings": []
+}

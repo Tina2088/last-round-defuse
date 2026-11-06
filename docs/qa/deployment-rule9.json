@@ -1,0 +1,41 @@
+{
+  "testedAt": "2026-11-05T09:35:19.289Z",
+  "checks": [
+    {
+      "url": "https://tina2088.github.io/last-round-defuse/.nojekyll",
+      "bytes": 1,
+      "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "contentEncoding": null
+    },
+    {
+      "url": "https://tina2088.github.io/last-round-defuse/assets/index-BUc9IFz6.css",
+      "bytes": 8624,
+      "sha256": "faadc098898aa77ecc0bec19c01ade1897c2c117594acb1dc4754cfbfede0c64",
+      "contentEncoding": "gzip"
+    },
+    {
+      "url": "https://tina2088.github.io/last-round-defuse/assets/index-Dj3e6Bmo.js",
+      "bytes": 30299,
+      "sha256": "4fb21771449b18d2eb70cdb82c1d08b5f5a533b32350f5868a8b1bee52e27bf0",
+      "contentEncoding": "gzip"
+    },
+    {
+      "url": "https://tina2088.github.io/last-round-defuse/assets/three-M-rpFpJR.js",
+      "bytes": 537336,
+      "sha256": "d47b1d77e5f4560d2db8b569a8712757fb1d20d2e26aaddc7a7fd4092be84d71",
+      "contentEncoding": "gzip"
+    },
+    {
+      "url": "https://tina2088.github.io/last-round-defuse/favicon.svg",
+      "bytes": 190,
+      "sha256": "81097a8942b0081d505c9411d0b23ef0e31d0dfc81a8a4464545ee65ba8e90fd",
+      "contentEncoding": null
+    },
+    {
+      "url": "https://tina2088.github.io/last-round-defuse/index.html",
+      "bytes": 748,
+      "sha256": "2a80fd02bcc5a35e8cde51d6dad224d4549e1747ab17cd44b59a9075cc002c31",
+      "contentEncoding": "gzip"
+    }
+  ]
+}

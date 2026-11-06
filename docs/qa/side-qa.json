@@ -1,0 +1,15 @@
+{
+  "testedAt": "2026-11-06T03:58:36.039Z",
+  "url": "http://127.0.0.1:5173/last-round-defuse/",
+  "checks": [
+    "defend: bilingual selection, spawn, yaw, HUD, ally model and minimap color",
+    "defender round 1: attacker plants, real held E defuses and scores for team 0",
+    "defend: actual 4→5 transition, colors and score retained",
+    "defend: UI restart retains starting side",
+    "attack: bilingual selection, spawn, yaw, HUD, ally model and minimap color",
+    "attack: actual 4→5 transition, colors and score retained",
+    "attack: UI restart retains starting side",
+    "960×540 side selection accessible"
+  ],
+  "errors": []
+}

@@ -1,0 +1,76 @@
+{
+  "label": "baseline",
+  "testedAt": "2026-11-05T09:32:36.393Z",
+  "viewport": "1440x900 DPR1",
+  "method": "Chrome headless; stationary spawn; paused AI; 3 x 180 rAF intervals; same renderer settings",
+  "gpu": "ANGLE (AMD, AMD Radeon(TM) 610M (0x0000164E) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+  "samples": [
+    {
+      "fps": 59.89418693641233,
+      "p95Ms": 17.09999999999991,
+      "render": {
+        "frame": 191,
+        "calls": 283,
+        "triangles": 4066,
+        "points": 0,
+        "lines": 0
+      }
+    },
+    {
+      "fps": 59.89219405070873,
+      "p95Ms": 17,
+      "render": {
+        "frame": 372,
+        "calls": 283,
+        "triangles": 4066,
+        "points": 0,
+        "lines": 0
+      }
+    },
+    {
+      "fps": 59.89617995474513,
+      "p95Ms": 17.299999999999272,
+      "render": {
+        "frame": 553,
+        "calls": 283,
+        "triangles": 4066,
+        "points": 0,
+        "lines": 0
+      }
+    }
+  ],
+  "files": [
+    {
+      "path": "dist/.nojekyll",
+      "bytes": 1,
+      "gzipBytes": 21
+    },
+    {
+      "path": "dist/assets/index-BUc9IFz6.css",
+      "bytes": 8624,
+      "gzipBytes": 2630
+    },
+    {
+      "path": "dist/assets/index-Dj3e6Bmo.js",
+      "bytes": 30299,
+      "gzipBytes": 12509
+    },
+    {
+      "path": "dist/assets/three-M-rpFpJR.js",
+      "bytes": 537336,
+      "gzipBytes": 131867
+    },
+    {
+      "path": "dist/favicon.svg",
+      "bytes": 190,
+      "gzipBytes": 167
+    },
+    {
+      "path": "dist/index.html",
+      "bytes": 748,
+      "gzipBytes": 437
+    }
+  ],
+  "totalBytes": 577198,
+  "gzipBytes": 147631
+}

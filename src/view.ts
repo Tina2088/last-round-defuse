@@ -1,14 +1,18 @@
 import * as THREE from 'three';
 import { blocks, sites, LIMIT } from './world';
 import { Game, type Actor } from './game';
+import { FPWeapons } from './fp-weapons';
 export class View {
   scene = new THREE.Scene(); camera = new THREE.PerspectiveCamera(75, innerWidth / innerHeight, 0.06, 180);
   renderer: THREE.WebGLRenderer; models = new Map<number, THREE.Group>(); solids: THREE.Object3D[] = [];
-  ray = new THREE.Raycaster(); bomb = new THREE.Group(); gun = new THREE.Group(); flash: THREE.Mesh;
+  ray = new THREE.Raycaster(); bomb = new THREE.Group(); fp: FPWeapons;
+  get gun() { return this.fp.root; }
+  get flash() { return this.fp.flash; }
+  get assetsReady() { return this.fp.ready; }
   traces: { line: THREE.Line; life: number }[] = []; recoil = 0;
   constructor(host: HTMLElement) {
     this.renderer = new THREE.WebGLRenderer({ antialias: true }); this.renderer.setPixelRatio(Math.min(devicePixelRatio, 1.75));
-    this.renderer.setSize(innerWidth, innerHeight); this.renderer.shadowMap.enabled = true; this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    this.renderer.setSize(innerWidth, innerHeight); this.renderer.shadowMap.enabled = true; this.renderer.shadowMap.type = THREE.PCFShadowMap;
     this.renderer.outputColorSpace = THREE.SRGBColorSpace; this.renderer.toneMapping = THREE.ACESFilmicToneMapping; this.renderer.toneMappingExposure = 1.25;
     host.prepend(this.renderer.domElement); this.renderer.domElement.id = 'scene';
     this.scene.background = new THREE.Color(0xb5c9d2); this.scene.fog = new THREE.Fog(0xb5c9d2, 42, 135);
@@ -47,12 +51,12 @@ export class View {
     for (let z = -24; z < 26; z += 4) for (const x of [-24, 24]) this.box(x, 0.012, z, 0.14, 0.02, 2, 0xd6c487);
     for (const x of [-33, 34]) { this.box(x, 12, -26, 1, 24, 1, 0x465d6b); this.box(x + (x < 0 ? 9 : -9), 24, -26, 20, 1, 1, 0x465d6b); this.box(x + (x < 0 ? 17 : -17), 19, -26, 0.1, 10, 0.1, 0x344954); }
     for (let x = -24; x <= 24; x += 8) this.box(x, 4, -27, 0.1, 2, 0.1, 0x344954);
-    const pack = this.box(0, 0.2, 0, 0.6, 0.4, 0.4, 0x28343b, this.bomb);
-    pack.castShadow = true; this.box(0, 0.42, 0, 0.15, 0.03, 0.12, 0xf5b84f, this.bomb); this.scene.add(this.bomb); this.bomb.visible = false;
-    this.camera.rotation.order = 'YXZ'; this.scene.add(this.camera); this.camera.add(this.gun);
-    this.flash = new THREE.Mesh(new THREE.ConeGeometry(0.09, 0.3, 6), new THREE.MeshBasicMaterial({ color: 0xffd17a })); this.flash.rotation.x = Math.PI / 2; this.flash.visible = false; this.gun.add(this.flash);
+    this.scene.add(this.bomb); this.bomb.visible = false;
+    this.fp = new FPWeapons(this.renderer, model => { model.scale.setScalar(1.7); model.position.set(0,.09,.34); this.bomb.add(model); });
+    this.camera.rotation.order = 'YXZ'; this.scene.add(this.camera);
+    this.renderer.info.autoReset = false;
     this.setWeapon(0);
-    addEventListener('resize', () => { this.camera.aspect = innerWidth / innerHeight; this.camera.updateProjectionMatrix(); this.renderer.setSize(innerWidth, innerHeight); });
+    addEventListener('resize', () => { this.camera.aspect = innerWidth / innerHeight; this.camera.updateProjectionMatrix(); this.fp.resize(); this.renderer.setSize(innerWidth, innerHeight); });
   }
   box(x: number, y: number, z: number, w: number, h: number, d: number, color: number, parent: THREE.Object3D = this.scene) {
     const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), new THREE.MeshStandardMaterial({ color, roughness: 0.85 })); m.position.set(x, y, z); m.castShadow = true; m.receiveShadow = true; parent.add(m); return m;
@@ -68,16 +72,11 @@ export class View {
     group.traverse(o => { if (o instanceof THREE.Mesh) { o.geometry.dispose(); for (const m of Array.isArray(o.material) ? o.material : [o.material]) m.dispose(); } });
   }
   setWeapon(index: number) {
-    for (const c of [...this.gun.children]) if (c !== this.flash) { this.disposeTree(c); this.gun.remove(c); }
-    const knife = index === 2; const length = index === 0 ? 0.65 : 0.32;
-    this.box(0.23, -0.23, -0.4, 0.13, 0.16, knife ? 0.18 : length, 0x33424a, this.gun);
-    this.box(0.23, -0.35, -0.3, 0.1, 0.2, 0.13, 0x252e34, this.gun);
-    this.box(0.23, knife ? -0.2 : -0.22, -0.65, knife ? 0.035 : 0.06, knife ? 0.13 : 0.06, knife ? 0.45 : length * 0.7, knife ? 0xbac7c9 : 0x1f2b30, this.gun);
-    if (index === 0) this.box(0.23, -0.12, -0.47, 0.045, 0.06, 0.09, 0x111e24, this.gun);
-    this.box(0.25, -0.4, -0.1, 0.18, 0.16, 0.3, 0x61717a, this.gun);
-    this.flash.position.set(0.23, -0.22, index === 0 ? -1 : -0.85);
+    this.fp.select(index);
   }
   reset(game: Game) {
+    this.fp.select(game.player.weapon); this.fp.reset(); this.recoil = 0;
+    for (const t of this.traces) { this.scene.remove(t.line); t.line.geometry.dispose(); (t.line.material as THREE.Material).dispose(); } this.traces = [];
     for (const m of this.models.values()) { this.scene.remove(m); this.disposeTree(m); } this.models.clear();
     for (const a of game.actors) {
       const g = new THREE.Group(); const attack = game.side(a.team) === 'attack'; const color = attack ? 0xf49b4b : 0x47ccd2;
@@ -100,34 +99,46 @@ export class View {
       g.traverse(o => { o.userData.actor = a.id; }); this.models.set(a.id, g); this.scene.add(g);
     }
   }
-  shoot(game: Game): { actor?: Actor; head: boolean; point: THREE.Vector3 } {
+  syncActors(game: Game, playing: boolean) {
+    for (const a of game.actors) {
+      const m = this.models.get(a.id)!; m.position.set(a.x, a.y, a.z); m.rotation.y = a.yaw; m.scale.y = a.crouch ? 0.7 : 1; m.visible = a.hp > 0 && (a.id !== 0 || !playing);
+    }
+  }
+  syncPlayerCamera(game: Game, pitch: number) {
+    const p = game.player; this.camera.position.set(p.x, p.y + (p.crouch ? 1.12 : 1.65), p.z); this.camera.rotation.set(pitch, p.yaw, 0);
+  }
+  shoot(game: Game, pitch = this.camera.rotation.x): { actor?: Actor; head: boolean; point: THREE.Vector3 } {
+    // Input and simulation can move the aim/target before the next render.
+    this.syncActors(game, true); this.syncPlayerCamera(game, pitch);
     this.camera.updateMatrixWorld(); this.scene.updateMatrixWorld(true); this.ray.setFromCamera(new THREE.Vector2(), this.camera);
-    const objects = [...this.solids, ...[...this.models].filter(([id, m]) => id !== 0 && m.visible).map(([, m]) => m)];
-    const hit = this.ray.intersectObjects(objects, true)[0];
-    const point = hit?.point ?? this.ray.ray.at(70, new THREE.Vector3());
-    const actor = hit && hit.object.userData.actor !== undefined ? game.actors[hit.object.userData.actor] : undefined;
-    this.recoil = 1; this.flash.visible = game.player.weapon !== 2;
-    const geo = new THREE.BufferGeometry().setFromPoints([this.camera.localToWorld(new THREE.Vector3(0.23, -0.22, -0.8)), point]);
+    // Enemy models take priority; scenery only supplies the tracer endpoint on a miss.
+    const enemies = game.actors.filter(a => a.hp > 0 && a.team !== game.player.team).map(a => this.models.get(a.id)!);
+    const actorHit = this.ray.intersectObjects(enemies, true)[0];
+    const actor = actorHit ? game.actors.find(a => a.id === actorHit.object.userData.actor) : undefined;
+    const point = actorHit?.point ?? this.ray.intersectObjects(this.solids, true)[0]?.point ?? this.ray.ray.at(70, new THREE.Vector3());
+    this.recoil = 1; this.fp.select(game.player.weapon); this.fp.fire();
+    this.gun.updateMatrixWorld(true);
+    const muzzle = this.fp.muzzle.clone().applyMatrix4(this.gun.matrixWorld);
+    const geo = new THREE.BufferGeometry().setFromPoints([this.camera.localToWorld(muzzle), point]);
     const line = new THREE.Line(geo, new THREE.LineBasicMaterial({ color: 0xffd89b, transparent: true, opacity: 0.75 })); this.scene.add(line); this.traces.push({ line, life: 0.06 });
     return { actor, head: !!actor && point.y > actor.y + (actor.crouch ? 1.03 : 1.35), point };
   }
   render(game: Game, dt: number, playing: boolean, pitch: number, time: number) {
-    for (const a of game.actors) {
-      const m = this.models.get(a.id)!; m.position.set(a.x, a.y, a.z); m.rotation.y = a.yaw; m.scale.y = a.crouch ? 0.7 : 1; m.visible = a.hp > 0 && (a.id !== 0 || !playing);
-    }
+    this.syncActors(game, playing);
     if (!playing) { this.camera.position.set(37 * Math.sin(0.75 + time * 0.015), 29, 37 * Math.cos(0.75 + time * 0.015)); this.camera.lookAt(0, 0, -4); this.gun.visible = false; }
     else if (game.player.hp > 0) {
-      const p = game.player; this.camera.position.set(p.x, p.y + (p.crouch ? 1.12 : 1.65), p.z); this.camera.rotation.set(pitch, p.yaw, 0); this.gun.visible = game.phase === 'live';
-      this.gun.position.y = Math.sin(time * 3) * 0.005 - (p.reload > 0 ? 0.25 : 0); this.gun.rotation.x = this.recoil * 0.07; this.gun.position.z = this.recoil * 0.06;
+      this.syncPlayerCamera(game, pitch); this.gun.visible = game.phase === 'live';
     } else {
       const target = game.actors.find(a => a.id !== 0 && a.team === 0 && a.hp > 0);
       if (target) { this.camera.position.set(target.x, 2.2, target.z); this.camera.rotation.set(-0.15, target.yaw, 0); this.models.get(target.id)!.visible = false; }
       else { this.camera.position.set(0, 32, 24); this.camera.lookAt(game.bomb?.x ?? 0, 0, game.bomb?.z ?? -8); }
       this.gun.visible = false;
     }
-    this.bomb.visible = !!game.bomb; if (game.bomb) { this.bomb.position.set(game.bomb.x, 0, game.bomb.z); this.bomb.children[1].visible = Math.sin(time * 8) > 0; }
-    this.recoil = Math.max(0, this.recoil - dt * 12); if (this.recoil < 0.3) this.flash.visible = false;
+    this.bomb.visible = !!game.bomb; if (game.bomb) this.bomb.position.set(game.bomb.x, 0, game.bomb.z);
+    this.fp.update(game.player, dt, time, playing && game.player.hp > 0 && game.phase === 'live');
+    this.recoil = this.fp.motion.recoil;
     this.traces = this.traces.filter(t => { t.life -= dt; if (t.life > 0) return true; this.scene.remove(t.line); t.line.geometry.dispose(); (t.line.material as THREE.Material).dispose(); return false; });
-    this.renderer.render(this.scene, this.camera);
+    this.renderer.info.reset(); this.renderer.render(this.scene, this.camera);
+    if (this.gun.visible) { this.renderer.autoClear = false; this.renderer.clearDepth(); this.renderer.render(this.fp.scene, this.fp.camera); this.renderer.autoClear = true; }
   }
 }

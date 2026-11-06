@@ -1,0 +1,91 @@
+{
+  "label": "weapons",
+  "testedAt": "2026-11-05T09:46:00.060Z",
+  "viewport": "1440x900 DPR1",
+  "method": "Chrome headless; stationary spawn; paused AI; 3 x 180 rAF intervals; same renderer settings",
+  "gpu": "ANGLE (AMD, AMD Radeon(TM) 610M (0x0000164E) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+  "samples": [
+    {
+      "fps": 59.8961799547451,
+      "p95Ms": 16.800000000000182,
+      "render": {
+        "frame": 430,
+        "calls": 288,
+        "triangles": 9642,
+        "points": 0,
+        "lines": 0
+      }
+    },
+    {
+      "fps": 59.896179954745115,
+      "p95Ms": 16.800000000000182,
+      "render": {
+        "frame": 792,
+        "calls": 288,
+        "triangles": 9642,
+        "points": 0,
+        "lines": 0
+      }
+    },
+    {
+      "fps": 59.89418693641235,
+      "p95Ms": 16.80000000000109,
+      "render": {
+        "frame": 1154,
+        "calls": 288,
+        "triangles": 9642,
+        "points": 0,
+        "lines": 0
+      }
+    }
+  ],
+  "files": [
+    {
+      "path": "dist/.nojekyll",
+      "bytes": 1,
+      "gzipBytes": 21
+    },
+    {
+      "path": "dist/assets/index-BUc9IFz6.css",
+      "bytes": 8624,
+      "gzipBytes": 2630
+    },
+    {
+      "path": "dist/assets/index-C5WalVTA.js",
+      "bytes": 33565,
+      "gzipBytes": 13566
+    },
+    {
+      "path": "dist/assets/three-D0IY2kJM.js",
+      "bytes": 623752,
+      "gzipBytes": 154579
+    },
+    {
+      "path": "dist/favicon.svg",
+      "bytes": 190,
+      "gzipBytes": 167
+    },
+    {
+      "path": "dist/index.html",
+      "bytes": 748,
+      "gzipBytes": 441
+    },
+    {
+      "path": "dist/models/c4.glb",
+      "bytes": 206492,
+      "gzipBytes": 41202
+    },
+    {
+      "path": "dist/models/pistol.glb",
+      "bytes": 233132,
+      "gzipBytes": 60496
+    },
+    {
+      "path": "dist/models/rifle_fp.glb",
+      "bytes": 375616,
+      "gzipBytes": 112740
+    }
+  ],
+  "totalBytes": 1482120,
+  "gzipBytes": 385842
+}
