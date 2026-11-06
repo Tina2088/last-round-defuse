@@ -1,0 +1,59 @@
+{
+  "testedAt": "2026-11-06T05:54:09.723Z",
+  "checks": [
+    {
+      "url": "https://tina2088.github.io/last-round-defuse/.nojekyll",
+      "bytes": 1,
+      "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "contentEncoding": null
+    },
+    {
+      "url": "https://tina2088.github.io/last-round-defuse/assets/index-BXaySmuI.js",
+      "bytes": 35817,
+      "sha256": "73a802caecc2e656285131ccdfb40e0535f6a193b4846f64f6e130d231aadb30",
+      "contentEncoding": "gzip"
+    },
+    {
+      "url": "https://tina2088.github.io/last-round-defuse/assets/index-D6dTXz7V.css",
+      "bytes": 9729,
+      "sha256": "8ae025ecb5dd2775da8d0f1fd987764c273f2991339650cd9818946c7266dc8b",
+      "contentEncoding": "gzip"
+    },
+    {
+      "url": "https://tina2088.github.io/last-round-defuse/assets/three-D0IY2kJM.js",
+      "bytes": 623752,
+      "sha256": "0106fa9ad835f0f6da57462538b925d1cdaf8316d5269a490230bb9ce1eea5e0",
+      "contentEncoding": "gzip"
+    },
+    {
+      "url": "https://tina2088.github.io/last-round-defuse/favicon.svg",
+      "bytes": 190,
+      "sha256": "81097a8942b0081d505c9411d0b23ef0e31d0dfc81a8a4464545ee65ba8e90fd",
+      "contentEncoding": null
+    },
+    {
+      "url": "https://tina2088.github.io/last-round-defuse/index.html",
+      "bytes": 760,
+      "sha256": "e6391f69e271e8b8203f51b0724b531e3b5861a0da9209bedd2adb5b1dd013cf",
+      "contentEncoding": "gzip"
+    },
+    {
+      "url": "https://tina2088.github.io/last-round-defuse/models/c4.glb",
+      "bytes": 206492,
+      "sha256": "cba2e5e3d50586bed992f0a8b7aa236ba32fe380cfa98555cf427be36d786d33",
+      "contentEncoding": "gzip"
+    },
+    {
+      "url": "https://tina2088.github.io/last-round-defuse/models/pistol.glb",
+      "bytes": 233132,
+      "sha256": "91f11d6e14bb49dafba74e0afcdd75401042ca9516dde9a32e3df9cc581b7173",
+      "contentEncoding": "gzip"
+    },
+    {
+      "url": "https://tina2088.github.io/last-round-defuse/models/rifle_fp.glb",
+      "bytes": 375616,
+      "sha256": "ca8a8094cab6451067730f60ca49999093e079493b86e3376ef3a92af1c9ad86",
+      "contentEncoding": "gzip"
+    }
+  ]
+}

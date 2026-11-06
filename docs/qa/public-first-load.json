@@ -1,57 +1,57 @@
 {
-  "testedAt": "2026-11-06T05:51:17.797Z",
+  "testedAt": "2026-11-06T05:54:08.677Z",
   "method": "Fresh Chrome browser context, empty HTTP cache, Resource Timing + Navigation Timing; response headers included in transferBytes",
   "files": [
     {
-      "url": "http://127.0.0.1:4173/last-round-defuse/",
-      "transferBytes": 1060,
-      "encodedBytes": 760,
+      "url": "https://tina2088.github.io/last-round-defuse/",
+      "transferBytes": 750,
+      "encodedBytes": 450,
       "decodedBytes": 760
     },
     {
-      "url": "http://127.0.0.1:4173/last-round-defuse/assets/index-BXaySmuI.js",
-      "transferBytes": 14716,
-      "encodedBytes": 14416,
+      "url": "https://tina2088.github.io/last-round-defuse/assets/index-BXaySmuI.js",
+      "transferBytes": 14515,
+      "encodedBytes": 14215,
       "decodedBytes": 35817
     },
     {
-      "url": "http://127.0.0.1:4173/last-round-defuse/assets/index-D6dTXz7V.css",
-      "transferBytes": 3138,
-      "encodedBytes": 2838,
+      "url": "https://tina2088.github.io/last-round-defuse/assets/index-D6dTXz7V.css",
+      "transferBytes": 3158,
+      "encodedBytes": 2858,
       "decodedBytes": 9729
     },
     {
-      "url": "http://127.0.0.1:4173/last-round-defuse/assets/three-D0IY2kJM.js",
-      "transferBytes": 154879,
-      "encodedBytes": 154579,
+      "url": "https://tina2088.github.io/last-round-defuse/assets/three-D0IY2kJM.js",
+      "transferBytes": 155806,
+      "encodedBytes": 155506,
       "decodedBytes": 623752
     },
     {
-      "url": "http://127.0.0.1:4173/last-round-defuse/models/rifle_fp.glb",
-      "transferBytes": 375916,
-      "encodedBytes": 375616,
+      "url": "https://tina2088.github.io/last-round-defuse/models/rifle_fp.glb",
+      "transferBytes": 110607,
+      "encodedBytes": 110307,
       "decodedBytes": 375616
     },
     {
-      "url": "http://127.0.0.1:4173/last-round-defuse/models/pistol.glb",
-      "transferBytes": 233432,
-      "encodedBytes": 233132,
+      "url": "https://tina2088.github.io/last-round-defuse/models/pistol.glb",
+      "transferBytes": 59771,
+      "encodedBytes": 59471,
       "decodedBytes": 233132
     },
     {
-      "url": "http://127.0.0.1:4173/last-round-defuse/models/c4.glb",
-      "transferBytes": 206792,
-      "encodedBytes": 206492,
+      "url": "https://tina2088.github.io/last-round-defuse/models/c4.glb",
+      "transferBytes": 41243,
+      "encodedBytes": 40943,
       "decodedBytes": 206492
     },
     {
-      "url": "http://127.0.0.1:4173/last-round-defuse/favicon.svg",
+      "url": "https://tina2088.github.io/last-round-defuse/favicon.svg",
       "transferBytes": 490,
       "encodedBytes": 190,
       "decodedBytes": 190
     }
   ],
-  "transferBytes": 990423,
-  "encodedBytes": 988023,
+  "transferBytes": 386340,
+  "encodedBytes": 383940,
   "decodedBytes": 1485488
 }

@@ -19,8 +19,10 @@
 - 发布前 `node scripts/combat-qa.mjs`（亦可 `npm run test:combat`）：**17/17 通过**，无浏览器错误；验证站立/蹲伏/转身/同帧移动、头/身体、墙后敌人优先、友军忽略、死亡敌人排除、实体/天空弹道回退及两档难度三把武器的真实鼠标射击。[战斗证据](qa/combat-qa.json)
 - `npm run build`：TypeScript 与 Vite 生产构建通过；仍有既存 Three.js 单块超过 500 kB 的体积提示。
 - `npm run test:browser`：**12/12 通过**；生产预览运行 `npm run test:public` 通过，无页面错误或控制台警告，包含 opt-in API、快照隔离和重开后的状态验证。[生产预览证据](qa/preview-v0.1.2.2.json)
-- 发布源码提交与 Pages SHA：发布后补记。部署前基线提交为 `03a4bac`；本次提交包含此前在本地完成的武器模型、选边、简单 AI 和一击必杀功能，避免把旧基线误当成发布源码。
-- 部署状态：待执行；尚未将本节的本地验证冒充公网验证。
+- 发布源码提交：`fd8c4054f75ac484876098f3846e75f1a2cfe16e`（`main`，已推送）。部署前基线为 `03a4bac`；发布提交包含此前在本地完成的武器模型、选边、简单 AI 和一击必杀功能。后续仅补记报告与公网证据，不改变构建源码。
+- `npm run deploy`：**Published**。Pages 提交：`62e69dc96393952263db23cc7a92b0faf254e9ee`；[部署工作流](https://github.com/Tina2088/last-round-defuse/actions/runs/42170985058) 成功，API 状态 **built**，HTTPS 强制开启。
+- 2026-11-06 05:54:09 UTC（北京时间 13:54:09），公网全部 **9 个文件与本地 dist 逐字节一致**，包括 HTML、JS/CSS 和三份模型。[文件 SHA-256 证据](qa/deployment-v0.1.2.2.json)
+- 2026-11-06 05:54:13 UTC，公网 `npm run test:public` **通过**：HTTP 200、品牌与标题 v0.1.2.2、真实键鼠和开关流程、默认/qa=0 隐藏 API、qa=1 读取快照、重开后读取当前状态；页面错误与控制台警告均为 0。[公网冒烟证据](qa/public-v0.1.2.2.json)
 
 以下保留旧版本历史记录与当时的测试证据；以本节为当前版本行为和验收依据。
 

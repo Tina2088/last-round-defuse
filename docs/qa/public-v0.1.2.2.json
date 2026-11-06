@@ -1,0 +1,29 @@
+{
+  "url": "https://tina2088.github.io/last-round-defuse/",
+  "status": 200,
+  "testedAt": "2026-11-06T05:54:13.482Z",
+  "version": "v0.1.2.2",
+  "checks": [
+    "v0.1.2.2 deployed",
+    "one-shot defaults ON and fresh page resets to ON",
+    "start OFF retained through language switch and into pause",
+    "pause toggle ON retained through language switch",
+    "default defend and bilingual side choice retained",
+    "both defend and attack starts show correct HUD side",
+    "rule 9 visible",
+    "all three GLBs loaded from Pages",
+    "production WebGL render",
+    "no development state hook",
+    "real pointer lock",
+    "3v3 start",
+    "fire and weapon switch",
+    "move",
+    "Escape and frozen clock",
+    "Chinese/English",
+    "live language shortcut retains pointer lock",
+    "localized round duration",
+    "no deprecated shadow API warnings"
+  ],
+  "errors": [],
+  "warnings": []
+}

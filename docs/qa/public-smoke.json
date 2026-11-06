@@ -1,10 +1,15 @@
 {
   "url": "https://tina2088.github.io/last-round-defuse/",
   "status": 200,
-  "testedAt": "2026-11-05T09:46:14.965Z",
-  "version": "v0.1.2",
+  "testedAt": "2026-11-06T05:54:13.482Z",
+  "version": "v0.1.2.2",
   "checks": [
-    "v0.1.2 deployed",
+    "v0.1.2.2 deployed",
+    "one-shot defaults ON and fresh page resets to ON",
+    "start OFF retained through language switch and into pause",
+    "pause toggle ON retained through language switch",
+    "default defend and bilingual side choice retained",
+    "both defend and attack starts show correct HUD side",
     "rule 9 visible",
     "all three GLBs loaded from Pages",
     "production WebGL render",
